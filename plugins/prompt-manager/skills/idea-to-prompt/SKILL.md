@@ -1,12 +1,18 @@
 ---
 name: idea-to-prompt
-description: Use when the user has a rough idea, vague feature request, or half-formed project and wants it turned into a structured implementation prompt. Interview them with a few targeted questions, then write a PROMPT.md with phases, deliverables, and binary success criteria, ready to hand to the prompt-manager skill.
+description: >
+  Turn a rough idea, vague feature request, or ClickUp brief into a structured
+  implementation prompt. Interviews first, then writes PROMPT-<slug>.md in a
+  claimed git worktree, ready for the prompt-manager skill. Use when the user
+  wants an idea turned into a prompt, or /idea-to-prompt.
 ---
 
-# Idea → Prompt Skill
+# Idea → Prompt
 
-The user's rough idea is the input: `$ARGUMENTS` (or whatever they describe in chat).
-Your job is NOT to implement anything. Your only deliverable is a `PROMPT.md`.
+The user's rough idea is the input: `$ARGUMENTS` (or the brief handed off by prompt-manager-full-run).
+Do not implement. The only deliverable is `PROMPT-<slug>.md` in a claimed worktree.
+
+Read `$PLUGIN_ROOT/references/isolation.md` and follow it for slug, claim, and file names. `$PLUGIN_ROOT` is `python3 …/scripts/credentials.py plugin-root`.
 
 ## 1. Interview First
 
@@ -26,7 +32,22 @@ of these are unclear:
 If the user says "just make sensible choices", make them, and record each
 assumption in the prompt so the implementing agent doesn't re-litigate them.
 
-## 2. Draft PROMPT.md
+## 2. Claim a worktree
+
+Target repo = cwd's git root, or the repo the user named.
+
+```bash
+SLUG=$(python3 "$PLUGIN_ROOT/scripts/worktree.py" slug --from "$SLUG_SOURCE")
+python3 "$PLUGIN_ROOT/scripts/worktree.py" claim --slug "$SLUG" --repo "$REPO"
+```
+
+`$SLUG_SOURCE` is the ClickUp id when one is in play, otherwise the project name.
+
+If `action` is `blocked`, stop and tell the user. If `reused` and the claim's `prompt_file` already exists, show a short summary and ask reuse vs regenerate — skip the write on reuse.
+
+All later writes happen in the JSON `worktree` path. Use the claim's `prompt_file` / `progress_file` names.
+
+## 3. Draft PROMPT-\<slug\>.md
 
 Write the prompt in this structure:
 
@@ -61,12 +82,13 @@ Explicit list. Include stretch goals here, clearly marked as
 
 ## Rules for the Implementing Agent
 - Never delete, skip, or weaken a test to make it pass; flag suspect
-  tests in PROGRESS.md instead.
-- Record failed approaches and key decisions in PROGRESS.md as you go.
+  tests in PROGRESS-<slug>.md instead.
+- Record failed approaches and key decisions in PROGRESS-<slug>.md as you go.
 - Commit after each completed phase.
+- Stay inside this worktree. Do not touch sibling worktrees or the main checkout.
 ```
 
-## 3. Self-Review Before Delivering
+## 4. Self-Review Before Delivering
 
 Re-read the draft as if you were the implementing agent with zero other
 context. Fix anything that fails these checks:
@@ -77,10 +99,9 @@ context. Fix anything that fails these checks:
 - Is the scope the *minimum* useful version? Move nice-to-haves to Out of Scope.
 - Would this loop forever on any criterion that isn't binary?
 
-## 4. Deliver
+## 5. Deliver
 
-- Write the result to `PROMPT.md` in the project root.
-- Show the user a short summary: phases, success criteria count, assumptions made.
-- Ask if they want edits. When they're happy, tell them to kick off with:
-  "Read PROMPT.md and execute it using the prompt-manager skill."
+- Write `PROMPT-<slug>.md` in the claimed worktree.
+- Show the user: worktree path, branch, slug, phase list, success-criteria count, assumptions.
+- Ask if they want edits. When they're happy, tell them to run prompt-manager on that file in that worktree.
 - Do not start implementing yourself.

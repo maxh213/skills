@@ -1,0 +1,19 @@
+{
+  "name": "prompt-manager",
+  "version": "1.0.0",
+  "description": "Sprint task to implementation: setup, sprint-tasks, task-context, idea-to-prompt, and prompt-manager, plus a full-run orchestrator.",
+  "author": {
+    "name": "Max Harris",
+    "email": "max.o.harris@outlook.com",
+    "url": "https://github.com/maxh213"
+  },
+  "homepage": "https://github.com/maxh213/skills",
+  "repository": "https://github.com/maxh213/skills",
+  "keywords": [
+    "prompt-manager",
+    "clickup",
+    "sprint",
+    "worktree",
+    "idea-to-prompt"
+  ]
+}

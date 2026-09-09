@@ -1,0 +1,21 @@
+{
+  "name": "maxh213-skills",
+  "description": "Agent skills shipped as the prompt-manager plugin",
+  "owner": {
+    "name": "Max Harris",
+    "email": "max.o.harris@outlook.com"
+  },
+  "plugins": [
+    {
+      "name": "prompt-manager",
+      "description": "Sprint tasks, task context, idea-to-prompt, and prompt-manager implementation — plus credential setup and a full-run orchestrator.",
+      "category": "productivity",
+      "source": {
+        "type": "local",
+        "path": "./plugins/prompt-manager"
+      },
+      "homepage": "https://github.com/maxh213/skills",
+      "keywords": ["prompt-manager", "clickup", "sprint", "idea-to-prompt"]
+    }
+  ]
+}

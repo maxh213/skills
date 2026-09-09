@@ -1,6 +1,6 @@
 ---
 name: task-context
-description: Deep context dive on a ClickUp task — resolve the (possibly typo'd) task ID, pull the full ClickUp description/comments, verify nobody else has started it, then sweep Slack history, git/PR/commit history, live infra state, previous Claude sessions, and Animus VM memory into one verdict-first brief. Read-only. Invoke when Max says "get the context on GLOBAL-XXXXX", "deep dive this task", "has anyone started X", "search through the context of this task", "background check on this ticket", or before picking up any sprint task whose history is unclear.
+description: Deep context dive on a ClickUp task — resolve the (possibly typo'd) task ID, pull the full ClickUp description/comments, verify nobody else has started it, then sweep Slack history, git/PR/commit history, live infra state, previous agent sessions, and Animus VM memory into one verdict-first brief. Read-only. Invoke when the user says "get the context on GLOBAL-XXXXX", "deep dive this task", "has anyone started X", "search through the context of this task", "background check on this ticket", or before picking up any sprint task whose history is unclear.
 ---
 
 # Task context deep-dive
@@ -12,42 +12,37 @@ or fix anything in this skill. Ultrathink-grade: take your time, chase every poi
 
 ## Tokens (all local, no VM needed for most steps)
 
-```bash
-# ClickUp (workspace/team id is 4540126 "Anima International")
-CU_TOKEN=$(python3 -c "
-import tomllib
-cfg=tomllib.load(open('$HOME/.config/workstation/config.toml','rb'))
-def walk(d,p=''):
-    for k,v in d.items():
-        if isinstance(v,dict): yield from walk(v,p+k)
-        elif 'clickup' in (p+k).lower() and ('token' in k.lower() or 'key' in k.lower()): yield v
-print(next(walk(cfg)))")
+`$PLUGIN_ROOT` is `python3 …/credentials.py plugin-root`. If `status` shows required ClickUp keys missing, follow `setup-prompt-manager` first.
 
-# Slack (Max's user token — search.messages works with it)
-SLACK_TOKEN=$(python3 -c "
-import tomllib
-cfg=tomllib.load(open('$HOME/.config/workstation/config.toml','rb'))
-print(cfg['slack'].get('token') or list(cfg['slack'].values())[0])")
+```bash
+CU_TOKEN=$(python3 "$PLUGIN_ROOT/scripts/credentials.py" get clickup.token)
+TEAM_ID=$(python3 "$PLUGIN_ROOT/scripts/credentials.py" get clickup.team_id)
+GITHUB_ORG=$(python3 "$PLUGIN_ROOT/scripts/credentials.py" get github.org)
+GCP_PROJECT=$(python3 "$PLUGIN_ROOT/scripts/credentials.py" get gcp.project)
+# only if status.items["slack.token"].present:
+SLACK_TOKEN=$(python3 "$PLUGIN_ROOT/scripts/credentials.py" get slack.token)
 ```
 
-**ClickUp API gotchas:** custom IDs need `?custom_task_ids=true&team_id=4540126`; NO trailing
+Do not echo those values. Skip Slack/GCP steps when the corresponding `status` item is not present.
+
+**ClickUp API gotchas:** custom IDs need `?custom_task_ids=true&team_id=$TEAM_ID`; NO trailing
 slash before `?` (301s otherwise, curl won't follow); comments endpoint wants the *internal* id
 (e.g. `869duaazx`), not the custom id.
 
-## Step 1 — Resolve the task ID (Max's IDs are often typo'd)
+## Step 1 — Resolve the task ID (typed IDs are often typo'd)
 
 Try the ID as given. If 404/unauthorized, generate permutations (dropped digit, doubled digit,
 transposition) and try each; also cross-check against the current sprint list
-(`~/.claude/skills/sprint-tasks/scripts/sprint_tasks.py`) — a task Max just saw in a sprint
-table is the likeliest referent. Pick by *context fit* (IT-flavoured, unassigned if he asked
+(`$PLUGIN_ROOT/skills/sprint-tasks/scripts/sprint_tasks.py`) — a task just shown in a sprint
+table is the likeliest referent. Pick by *context fit* (IT-flavoured, unassigned if they asked
 "has anyone started it", recently discussed) and **state which ID you resolved to and why**.
-If no candidate is a *confident* match (exact-ish digits AND context fit), **ask Max which task
-he meant before running the full dive** — one AskUserQuestion beats a deep dive on the wrong
+If no candidate is a *confident* match (exact-ish digits AND context fit), **ask which task
+they meant before running the full dive** — one question beats a deep dive on the wrong
 task (learned 2026-07-07: "154296" meant 15396, not 15419).
 
 ```bash
 curl -s -H "Authorization: $CU_TOKEN" \
-  "https://api.clickup.com/api/v2/task/GLOBAL-XXXXX?custom_task_ids=true&team_id=4540126"
+  "https://api.clickup.com/api/v2/task/GLOBAL-XXXXX?custom_task_ids=true&team_id=$TEAM_ID"
 ```
 
 ## Step 2 — ClickUp: full task + comments
@@ -68,9 +63,9 @@ state (Step 5) before repeating it.
 All of: assignees empty? status still backlog? zero comments? Then in the relevant repo(s):
 
 ```bash
-gh pr list --repo otwarteklatki/<repo> --state open --json number,title,author,headRefName
-gh api repos/otwarteklatki/<repo>/branches --paginate -q '.[].name' | grep -i '<task-id-digits>\|<service>'
-gh api "repos/otwarteklatki/<repo>/commits?path=<relevant/path>&since=<task_created_date>" \
+gh pr list --repo "$GITHUB_ORG"/<repo> --state open --json number,title,author,headRefName
+gh api repos/"$GITHUB_ORG"/<repo>/branches --paginate -q '.[].name' | grep -i '<task-id-digits>\|<service>'
+gh api "repos/$GITHUB_ORG/<repo>/commits?path=<relevant/path>&since=<task_created_date>" \
   -q '.[] | .commit.committer.date + " " + (.commit.message | split("\n")[0])'
 ```
 
@@ -120,14 +115,14 @@ Follow the pointers the task gives (console links name the service/region/projec
 ```bash
 # is it still failing TODAY?
 gcloud logging read 'resource.type="cloud_run_revision" AND resource.labels.service_name="<svc>"
-  AND httpRequest.status>=500' --project=otwarte-klatki --freshness=3d --limit=10 \
+  AND httpRequest.status>=500' --project="$GCP_PROJECT" --freshness=3d --limit=10 \
   --format='value(timestamp,httpRequest.status,httpRequest.latency)'
 # what do recent requests look like overall?  (drop the status filter)
 # WHY is it failing — logs around one failure timestamp (textPayload catches OOM/tracebacks):
 gcloud logging read '... AND timestamp>="<t-5m>" AND timestamp<="<t+5m>"' --limit=20 \
   --format='value(timestamp,severity,textPayload,httpRequest.status)'
 # resource limits (undersized 512Mi/0.17cpu defaults are a recurring failure cause here):
-gcloud run services describe <svc> --region=<region> --project=otwarte-klatki \
+gcloud run services describe <svc> --region=<region> --project="$GCP_PROJECT" \
   --format='value(spec.template.spec.timeoutSeconds, spec.template.spec.containers[0].resources.limits)'
 ```
 
@@ -144,7 +139,7 @@ boilerplate sites show `x-powered-by: Next.js` + Cloudflare.
 
 ## Step 6 — Code reality check
 
-`gh search code --repo otwarteklatki/<repo> '<service-name>'` → fetch the current main file(s)
+`gh search code --repo "$GITHUB_ORG"/<repo> '<service-name>'` → fetch the current main file(s)
 (`gh api repos/.../contents/<path> -q .content | base64 -d`) and read enough to say whether the
 proposed fix in the description still matches the code, and what the plausible root cause is.
 
@@ -152,14 +147,14 @@ proposed fix in the description still matches the code, and what the plausible r
 
 ```bash
 # local sessions that touched this topic (print first user msg per hit):
-grep -l '<keyword>\|GLOBAL-XXXXX' ~/.claude/projects/-home-maxh-workspace/*.jsonl
+grep -l '<keyword>\|GLOBAL-XXXXX' ~/.claude/projects/*/*.jsonl ~/.grok/sessions/*/*.jsonl 2>/dev/null
 # Animus memory — PREFER the GitHub mirror over SSH (learned 2026-07-09): the VM's
-# memory/ is pushed nightly to otwarteklatki/ais-ai-workspace, and gh search code
+# memory/ is pushed nightly to "$GITHUB_ORG"/ais-ai-workspace, and gh search code
 # finds the right files in one call, no VM hop:
-gh search code --repo otwarteklatki/ais-ai-workspace '<keyword>' --json path -q '.[].path'
-gh api repos/otwarteklatki/ais-ai-workspace/contents/<path> -q .content | base64 -d
+gh search code --repo "$GITHUB_ORG"/ais-ai-workspace '<keyword>' --json path -q '.[].path'
+gh api repos/"$GITHUB_ORG"/ais-ai-workspace/contents/<path> -q .content | base64 -d
 # SSH only for same-day memory (not yet pushed) or live VM state (crontabs, /tmp logs):
-gcloud compute ssh ais-ai --zone=europe-west3-a --project=otwarte-klatki \
+gcloud compute ssh ais-ai --zone=europe-west3-a --project="$GCP_PROJECT" \
   --command='sudo grep -ril "<keyword>" /home/openclaw/.openclaw/workspace/memory/ | head'
 ```
 

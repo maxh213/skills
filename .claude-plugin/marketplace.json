@@ -1,0 +1,14 @@
+{
+  "name": "maxh213-skills",
+  "owner": {
+    "name": "Max Harris",
+    "email": "max.o.harris@outlook.com"
+  },
+  "plugins": [
+    {
+      "name": "prompt-manager",
+      "source": "./plugins/prompt-manager",
+      "description": "Sprint tasks, task context, idea-to-prompt, and prompt-manager implementation — plus credential setup and a full-run orchestrator."
+    }
+  ]
+}
