@@ -1,0 +1,21 @@
+{
+  "name": "scout",
+  "version": "1.0.0",
+  "description": "Quota-routed codebase exploration: delegates read-only repo scouting to the cheapest live backend (Mercury 2.5 via kilo, Kimi K2.7 via kimi CLI, or Haiku 4.5 via claude CLI), picking per-run by measured subscription quota windows.",
+  "author": {
+    "name": "Max Harris",
+    "email": "max.o.harris@outlook.com",
+    "url": "https://github.com/maxh213"
+  },
+  "homepage": "https://github.com/maxh213/skills",
+  "repository": "https://github.com/maxh213/skills",
+  "keywords": [
+    "scout",
+    "exploration",
+    "codebase",
+    "quota",
+    "kilo",
+    "kimi",
+    "claude"
+  ]
+}
