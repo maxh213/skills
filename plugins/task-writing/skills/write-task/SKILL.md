@@ -36,6 +36,7 @@ Unclear? Pick the closest, say which you picked, and move on.
 
 Follow the cheat sheet. The rules that get broken most often:
 
+- **Why: three sentences, 15 words each, hard cap.** Count the words before you move on. This is the section people actually skip, and a fourth sentence guarantees it.
 - **Title: verb first**, ~7 words, names the thing affected, makes sense in a list of 50 tickets a month from now. A bare noun is a topic, not a task.
 - **One outcome.** If *What* needs an "and", you have two tasks — say so.
 - **Done when** is ≤ 8 yes/no checks, covering happy path, failure path and one edge case.
@@ -66,6 +67,13 @@ If the *Why* itself is unknown, or you are carrying more than about three open q
 
 Check the draft against the cheat sheet's 60-second check (§6) and fix what fails. Read it once as the assignee, once as QA. Halve the word count, then look again for what else can go.
 
+Two counts to do literally, not by eye:
+
+- *Why* is at most 3 sentences, each at most 15 words. Over on either, cut until it isn't.
+- No section runs longer than the table in §1 allows.
+
+A task that survives this is shorter than feels right. That is the point — humans skim on a phone and do not read past the first line.
+
 ## 6. Write the file
 
 Slug is the title, lowercased, kebab-cased, stop words dropped, ~5 words (`Add CSV export to the orders page` → `add-csv-export-orders`).
@@ -78,4 +86,6 @@ Start the file with the title as an `# H1`. Then the sections for the type, in t
 
 ## 7. Hand back
 
-Print the path, then the title line, then any open questions and assumptions as a short list. Do not re-print the whole file — the user can open it.
+Print the file's full contents inline in your reply, inside a fenced code block, then the path below it. Shell output from `cat` does not reliably reach the user's console, so a tool call is not a substitute.
+
+Then list any open questions and assumptions, so the guesses are visible without re-reading.

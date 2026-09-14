@@ -1,6 +1,6 @@
 {
   "name": "task-writing",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Turn a rough description into a task, ticket, bug report, spike or chore that a stranger can pick up — optionally grilling the idea first.",
   "author": {
     "name": "Max Harris",
