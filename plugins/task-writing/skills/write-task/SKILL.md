@@ -52,10 +52,13 @@ This is the rule that matters most here, because you will be given three lines a
 
 Every factual claim in the task — who is affected, how often, what it costs, what the constraint is, what the deadline is — must trace back to something the user actually said or something you verified in the repo, docs or tracker.
 
-Anything else is written as one of:
+Anything else is marked in place, attached to the claim it qualifies:
 
-- **Open question:** does this need to work offline?
-- **Assumption:** the API already returns `created_at`.
+> Mobile only. Open question: does this need to work offline?
+
+> Sorted newest first. Assumption: the API already returns `created_at`.
+
+**Inline, never a section of their own.** There is no "Open questions" heading in the anatomy table, and collecting gaps in a bucket at the bottom separates each one from the thing it undermines. A gap next to the claim gets answered; a gap in a list at the end gets skimmed past.
 
 Never silently fill a gap with a plausible business justification. A visible gap gets answered; a hidden one gets built wrong.
 
@@ -82,10 +85,14 @@ Slug is the title, lowercased, kebab-cased, stop words dropped, ~5 words (`Add C
 - `--out PATH` overrides it. A directory means `PATH/TASK-<slug>.md`.
 - Never overwrite silently: if the file exists, show the user and ask.
 
-Start the file with the title as an `# H1`. Then the sections for the type, in the order in the table above, omitting any section that would be empty — except *Why*, *What* and *Done when*, which are the minimum viable ticket and always appear.
+Start the file with the title as an `# H1`.
+
+**Write only *Why*, *What* and *Done when* unless another section earns its place.** That is the cheat sheet's minimum viable ticket; §1 says the rest is added *as needed*, not by default. Use only the section names in that table — never invent one.
+
+A section earns its place when it answers a question the reader would otherwise have to ask. It does not earn its place because the type table mentions it, or because you have material that would fit. Dashboard figures, tables and evidence belong behind a link, not pasted in.
 
 ## 7. Hand back
 
 Print the file's full contents inline in your reply, inside a fenced code block, then the path below it. Shell output from `cat` does not reliably reach the user's console, so a tool call is not a substitute.
 
-Then list any open questions and assumptions, so the guesses are visible without re-reading.
+Then say which parts are guesses, so they are visible without re-reading. In your reply, not as a section in the file.

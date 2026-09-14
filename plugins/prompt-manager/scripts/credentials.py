@@ -296,6 +296,7 @@ def cmd_export(args) -> int:
         "clickup.user_id": "CLICKUP_USER_ID",
         "clickup.team_id": "CLICKUP_TEAM_ID",
         "clickup.sprint_folder": "CLICKUP_SPRINT_FOLDER",
+        "clickup.triage_list": "CLICKUP_TRIAGE_LIST",
         "slack.token": "SLACK_TOKEN",
         "github.token": "GITHUB_TOKEN",
         "github.org": "GITHUB_ORG",

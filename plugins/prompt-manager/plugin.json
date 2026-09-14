@@ -1,7 +1,7 @@
 {
   "name": "prompt-manager",
-  "version": "1.0.0",
-  "description": "Sprint task to implementation: setup, sprint-tasks, task-context, idea-to-prompt, and prompt-manager, plus a full-run orchestrator.",
+  "version": "1.1.0",
+  "description": "Sprint task to implementation: setup, sprint-tasks, task-context, idea-to-prompt, and prompt-manager, plus a full-run orchestrator and task-to-clickup for filing task files into the sprint or PM triage.",
   "author": {
     "name": "Max Harris",
     "email": "max.o.harris@outlook.com",

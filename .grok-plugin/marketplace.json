@@ -8,14 +8,19 @@
   "plugins": [
     {
       "name": "prompt-manager",
-      "description": "Sprint tasks, task context, idea-to-prompt, and prompt-manager implementation — plus credential setup and a full-run orchestrator.",
+      "description": "Sprint tasks, task context, idea-to-prompt, prompt-manager implementation, and task-to-clickup filing \u2014 plus credential setup and a full-run orchestrator.",
       "category": "productivity",
       "source": {
         "type": "local",
         "path": "./plugins/prompt-manager"
       },
       "homepage": "https://github.com/maxh213/skills",
-      "keywords": ["prompt-manager", "clickup", "sprint", "idea-to-prompt"]
+      "keywords": [
+        "prompt-manager",
+        "clickup",
+        "sprint",
+        "idea-to-prompt"
+      ]
     },
     {
       "name": "scout",
@@ -26,18 +31,29 @@
         "path": "./plugins/scout"
       },
       "homepage": "https://github.com/maxh213/skills",
-      "keywords": ["scout", "exploration", "codebase", "quota"]
+      "keywords": [
+        "scout",
+        "exploration",
+        "codebase",
+        "quota"
+      ]
     },
     {
       "name": "task-writing",
-      "description": "Turn a rough description into a task, ticket, bug report, spike or chore that a stranger can pick up — optionally grilling the idea first.",
+      "description": "Turn a rough description into a task, ticket, bug report, spike or chore that a stranger can pick up \u2014 optionally grilling the idea first.",
       "category": "productivity",
       "source": {
         "type": "local",
         "path": "./plugins/task-writing"
       },
       "homepage": "https://github.com/maxh213/skills",
-      "keywords": ["task", "ticket", "issue", "bug-report", "writing"]
+      "keywords": [
+        "task",
+        "ticket",
+        "issue",
+        "bug-report",
+        "writing"
+      ]
     }
   ]
 }

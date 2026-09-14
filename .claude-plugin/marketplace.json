@@ -8,7 +8,7 @@
     {
       "name": "prompt-manager",
       "source": "./plugins/prompt-manager",
-      "description": "Sprint tasks, task context, idea-to-prompt, and prompt-manager implementation — plus credential setup and a full-run orchestrator."
+      "description": "Sprint tasks, task context, idea-to-prompt, prompt-manager implementation, and task-to-clickup filing \u2014 plus credential setup and a full-run orchestrator."
     },
     {
       "name": "scout",
@@ -18,7 +18,7 @@
     {
       "name": "task-writing",
       "source": "./plugins/task-writing",
-      "description": "Turn a rough description into a task, ticket, bug report, spike or chore that a stranger can pick up — optionally grilling the idea first."
+      "description": "Turn a rough description into a task, ticket, bug report, spike or chore that a stranger can pick up \u2014 optionally grilling the idea first."
     }
   ]
 }
