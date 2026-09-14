@@ -13,7 +13,11 @@ argument-hint: "TASK-<slug>.md [--sprint | --triage]"
 
 One task file in, one ClickUp task out. The file is the source of truth: its H1 becomes the task name and everything below it becomes the description, verbatim.
 
-Script: `python3 "$PLUGIN_ROOT/skills/task-to-clickup/scripts/task_to_clickup.py"`. `$PLUGIN_ROOT` is `credentials.py plugin-root` (`GROK_PLUGIN_ROOT` / `CLAUDE_PLUGIN_ROOT`). A missing token means `setup-prompt-manager` first.
+```bash
+SCRIPT="$PLUGIN_ROOT/skills/task-to-clickup/scripts/task_to_clickup.py"
+```
+
+`$PLUGIN_ROOT` is `credentials.py plugin-root` (`GROK_PLUGIN_ROOT` / `CLAUDE_PLUGIN_ROOT`). A missing token means `setup-prompt-manager` first.
 
 ## 1. Take the file
 

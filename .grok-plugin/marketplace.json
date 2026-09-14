@@ -15,12 +15,7 @@
         "path": "./plugins/prompt-manager"
       },
       "homepage": "https://github.com/maxh213/skills",
-      "keywords": [
-        "prompt-manager",
-        "clickup",
-        "sprint",
-        "idea-to-prompt"
-      ]
+      "keywords": ["prompt-manager", "clickup", "sprint", "idea-to-prompt"]
     },
     {
       "name": "scout",
@@ -31,12 +26,7 @@
         "path": "./plugins/scout"
       },
       "homepage": "https://github.com/maxh213/skills",
-      "keywords": [
-        "scout",
-        "exploration",
-        "codebase",
-        "quota"
-      ]
+      "keywords": ["scout", "exploration", "codebase", "quota"]
     },
     {
       "name": "task-writing",
@@ -47,13 +37,7 @@
         "path": "./plugins/task-writing"
       },
       "homepage": "https://github.com/maxh213/skills",
-      "keywords": [
-        "task",
-        "ticket",
-        "issue",
-        "bug-report",
-        "writing"
-      ]
+      "keywords": ["task", "ticket", "issue", "bug-report", "writing"]
     }
   ]
 }

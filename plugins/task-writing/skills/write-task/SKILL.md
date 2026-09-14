@@ -66,6 +66,23 @@ Never silently fill a gap with a plausible business justification. A visible gap
 
 If the *Why* itself is unknown, or you are carrying more than about three open questions, the task is not ready. Write it anyway, then tell the user plainly which parts are guesses and offer `grill-task` to close them.
 
+### Which gaps are worth marking
+
+Not inventing context does not mean interrogating every unknown. Apply one test before you mark anything:
+
+**If this turns out to be wrong, does it change what someone builds or decides?** If not, leave it out.
+
+Things that fail that test, and must not be marked:
+
+- **The reader's own shorthand.** If they say "cleanliness", "tidy" or "sensible defaults", they know what they mean. Write it down and move on. Never ask someone to define their own word.
+- **Anything they already know.** An exact date, a figure on a dashboard they look at daily. You are writing the task for them, not auditing them.
+- **A detail that is off by a day, a rounding, or a name.** Precision that changes nothing is noise.
+- **Anything you have already raised.** Once. If they didn't answer, they didn't think it mattered.
+
+The *no vague adjectives* rule applies to **Done when**, where a check must be runnable. It does not apply to a constraint, a scope note or an aside where the reader knows their own meaning. Applying it there is pedantry and makes the task worse.
+
+A task with no marked gaps is the normal case, not a failure.
+
 ## 5. Run the checklist
 
 Check the draft against the cheat sheet's 60-second check (§6) and fix what fails. Read it once as the assignee, once as QA. Halve the word count, then look again for what else can go.

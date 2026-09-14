@@ -26,7 +26,24 @@ Seed its design tree with the task's own anatomy, so the interview converges on 
 - **Size** — one outcome, one person, a few days? If not, where does it split?
 - **Links** — the design, the epic, the incident, the related ticket.
 
-Let `grilling` run its own rounds and format. It stops when the frontier is empty and the user confirms a shared understanding. Do not cut it short, and do not start drafting mid-interview.
+Let `grilling` run its own rounds and format. Do not start drafting mid-interview.
+
+<stop-condition>
+
+`grilling` on its own runs until every branch of a design tree is settled. That is the wrong target here. **You are gathering enough to describe the task, not enough to execute it.**
+
+Stop when you could write the Why, the What and the Done when. Then stop, even if plenty is still unknown — the assignee settles the rest by doing the work.
+
+Never ask:
+
+- How the work should be carried out. That is the implementer's call, and the cheat sheet says so.
+- Who approves it, or how it gets signed off.
+- What the user meant by their own shorthand.
+- Anything whose answer would not change a word of the description.
+
+Two rounds is normal. If you are starting a fourth, you are planning the work rather than describing it — write the task instead.
+
+</stop-condition>
 
 <fallback>
 

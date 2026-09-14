@@ -17,6 +17,9 @@ an open question or a stated assumption, never invented.** A task that comes bac
 with three or more open questions is telling you it wasn't ready — that's when
 `/grill-task` earns its keep.
 
+To push the resulting file into ClickUp, `/task-to-clickup TASK-<slug>.md` from the
+`prompt-manager` plugin files it into the current sprint or the PM triage queue.
+
 `/grill-task` delegates the interview to `grilling` from the
 [mattpocock-skills](https://github.com/anthropics/claude-plugins-official) plugin.
 Without it, the skill falls back to running the interview itself.

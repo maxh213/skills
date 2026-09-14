@@ -44,6 +44,7 @@ plugins/prompt-manager/
     idea-to-prompt/
     prompt-manager/
     prompt-manager-full-run/
+    task-to-clickup/     # TASK-<slug>.md -> current sprint (assigned) or PM TRIAGE (unassigned)
 
 plugins/scout/
   plugin.json
@@ -69,3 +70,5 @@ Secrets are read from `~/.config/workstation/config.toml` at runtime (mode 0600)
 `scout` needs at least one of the kilo, kimi, or claude CLIs installed and logged in; see `plugins/scout/README.md` for how routing works.
 
 `task-writing` writes nothing the description didn't say: gaps become open questions or stated assumptions. `/grill-task` uses the `grilling` skill from mattpocock-skills when it's installed, and runs the interview itself when it isn't.
+
+`/task-to-clickup TASK-<slug>.md` files a task file into ClickUp: the current sprint (assigned to you, status `backlog`) or the PM TRIAGE queue (unassigned). It asks for sprint points and MoSCoW, proposes Field of work, Project name and a one-line Definition of Done from the file, and creates the task only after you confirm. The triage list id is `clickup.triage_list` in the credential catalog.
