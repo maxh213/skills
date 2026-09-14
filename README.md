@@ -45,6 +45,7 @@ plugins/prompt-manager/
     prompt-manager/
     prompt-manager-full-run/
     task-to-clickup/     # TASK-<slug>.md -> current sprint (assigned) or PM TRIAGE (unassigned)
+    guide-me/            # task-context dive, one plain-English paragraph out
 
 plugins/scout/
   plugin.json
@@ -69,6 +70,8 @@ Secrets are read from `~/.config/workstation/config.toml` at runtime (mode 0600)
 
 `scout` needs at least one of the kilo, kimi, or claude CLIs installed and logged in; see `plugins/scout/README.md` for how routing works.
 
-`task-writing` writes nothing the description didn't say: gaps become open questions or stated assumptions. `/grill-task` uses the `grilling` skill from mattpocock-skills when it's installed, and runs the interview itself when it isn't.
+`task-writing` writes nothing the description didn't say: a gap that changes the work is asked about first, and the rest is left out. Tickets never carry open questions. `/grill-task` uses the `grilling` skill from mattpocock-skills when it's installed, and runs the interview itself when it isn't.
 
-`/task-to-clickup TASK-<slug>.md` files a task file into ClickUp: the current sprint (assigned to you, status `backlog`) or the PM TRIAGE queue (unassigned). It asks for sprint points and MoSCoW, proposes Field of work, Project name and a one-line Definition of Done from the file, and creates the task only after you confirm. The triage list id is `clickup.triage_list` in the credential catalog.
+`/task-to-clickup TASK-<slug>.md` files a task file into ClickUp: the current sprint (assigned to you, status `backlog`) or the PM TRIAGE queue (unassigned). It asks for sprint points and MoSCoW, proposes Field of work, Project name, Project category and a one-line Definition of Done from the file, and creates the task only after you confirm. The triage list id is `clickup.triage_list` in the credential catalog.
+
+`/guide-me GLOBAL-XXXXX` runs the whole `task-context` dive and answers in one plain-English paragraph: what is wrong, where (one file link), the fix with its one caution, and whether anyone has started it. Shaped by the [i-have-adhd](https://github.com/ayghri/i-have-adhd) rules, then cut further: no steps, no estimates, nothing the reader will not read.
