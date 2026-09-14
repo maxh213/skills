@@ -109,9 +109,9 @@ Minimum viable ticket: Why, What, Done when. The rest is added as needed.
 
 ### Be honest about gaps
 
-- Mark unknowns: *"Open question: does this need to work offline?"*
-- State assumptions: *"Assumes the API already returns `created_at`."*
-- A visible gap gets answered. A hidden one gets guessed.
+- Settle unknowns that change the work before you write, by asking the person who knows.
+- Leave out the ones that don't. The reader has the organisation's context and does not need "who controls DNS?" spelled out.
+- A question written into the ticket is neither: it gets built late while someone chases it. Ask or drop, never mark.
 
 ---
 

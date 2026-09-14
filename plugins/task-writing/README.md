@@ -12,10 +12,10 @@ Both follow `skills/write-task/CHEAT-SHEET.md`, which covers the section anatomy
 chores, plain-language rules, and a 60-second pre-save checklist. It cites its
 sources at the bottom.
 
-The rule doing the most work: **anything the description didn't say is written as
-an open question or a stated assumption, never invented.** A task that comes back
-with three or more open questions is telling you it wasn't ready — that's when
-`/grill-task` earns its keep.
+The rule doing the most work: **anything the description didn't say is either asked
+about before writing or left out, never invented and never written into the ticket as a
+question.** If `write-task` would need more than three questions to fill the gaps, it is
+telling you the idea wasn't ready — that's when `/grill-task` earns its keep.
 
 To push the resulting file into ClickUp, `/task-to-clickup TASK-<slug>.md` from the
 `prompt-manager` plugin files it into the current sprint or the PM triage queue.

@@ -57,4 +57,4 @@ Call the Skill tool with `write-task`, passing the user's original description p
 
 `write-task` owns the format, the cheat sheet, the checklist and the file. Do not duplicate its rules here — just hand it the sharpened material.
 
-One difference from a cold `write-task` run: after a proper grilling there should be almost nothing left to mark as an open question. If you are still about to write three or more, the frontier was not actually empty — go back to step 1 for another round.
+One difference from a cold `write-task` run: after a proper grilling there should be nothing left for `write-task` to ask about. If it still needs to ask, the frontier was not actually empty — go back to step 1 for another round.
