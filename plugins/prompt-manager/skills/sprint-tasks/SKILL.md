@@ -26,7 +26,11 @@ Outputs the sprint name + a JSON array of tasks (who/status/priority/points/id/n
 
 ## Presenting results
 
-Render as a markdown table: ID, task name (linked to URL), status, points, priority, assignee. Group or mark "UNASSIGNED" vs "me". Order by: MoSCoW/priority (urgent > high > normal > none), then points ascending (small wins first).
+Default run (no flag) shows the user's tasks plus unassigned ones. Pass `--all` only when the user asks for everyone's.
+
+**Group by status**, one table per status, in workflow order: work in progress, blocked, backlog, then any other open status. Within a group order by priority (urgent > high > normal > none), then points ascending.
+
+Table columns: ID (linked to URL), task name, points, priority, assignee ("me" or "UNASSIGNED"). No status column; the heading carries it. End with one line of totals: tasks and points, mine vs unassigned.
 
 ## How it works (if the script breaks)
 
