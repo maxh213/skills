@@ -11,13 +11,22 @@ Personal tooling ships as separate plugins: **scout** (quota-routed codebase exp
 ```bash
 grok plugin marketplace add maxh213/skills
 grok plugin install prompt-manager --trust
+grok plugin install scout --trust        # optional, personal tooling
 ```
 
 Then `/setup-prompt-manager` once, then `/prompt-manager-full-run`.
 
 ## Install (Claude Code)
 
-Add this repo as a marketplace, or copy each folder under `plugins/prompt-manager/skills/` (work skills) or `plugins/scout/skills/` (scout) into `~/.claude/skills/`.
+```bash
+claude plugin marketplace add maxh213/skills
+claude plugin install prompt-manager@maxh213-skills
+claude plugin install scout@maxh213-skills        # optional, personal tooling
+```
+
+Restart Claude Code afterwards — plugin skills are enumerated at startup.
+
+Alternatively, copy each folder under `plugins/prompt-manager/skills/` (work skills) or `plugins/scout/skills/` (scout) into `~/.claude/skills/`.
 
 ## Layout
 
