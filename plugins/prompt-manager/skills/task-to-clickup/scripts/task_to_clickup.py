@@ -8,7 +8,8 @@ Usage:
 
   task_to_clickup.py create --file TASK.md --dest sprint|triage \
       --points N --moscow "Should Have" --project "Boilerplate" \
-      --field-of-work "Write to Page" [--field-of-work ...] --dod "one sentence" [--dry-run]
+      --field-of-work "Write to Page" [--field-of-work ...] [--category "Business projects"] \
+      --dod "one sentence" [--dry-run]
       Create the task. Title = the file's H1; description = the rest, as markdown.
       Prints JSON: id, custom_id, url, list. --dry-run prints the payload instead.
 
@@ -43,6 +44,7 @@ PREFERRED_FIELD_IDS = {"moscow": "7bda9d43-c0a9-4b43-930e-eab87306f11c"}
 FIELD_NAMES = {
     "field_of_work": "Field of work",
     "project": "Project name",
+    "category": "Project categories",
     "moscow": "MoSCoW",
     "dod": "Definition Of Done",
 }
@@ -256,6 +258,12 @@ def cmd_create(args) -> int:
         resolved[proj["name"]] = name
         custom_fields.append({"id": proj["id"], "value": oid})
 
+    cat = fields.get("category")
+    if cat and args.category:
+        name, oid = match_option(cat["options"], args.category, cat["name"])
+        resolved[cat["name"]] = name
+        custom_fields.append({"id": cat["id"], "value": oid})
+
     mos = fields.get("moscow")
     if mos and args.moscow:
         name, oid = match_option(mos["options"], args.moscow, mos["name"])
@@ -329,6 +337,7 @@ def main() -> int:
     p.add_argument("--moscow")
     p.add_argument("--project")
     p.add_argument("--field-of-work", action="append", default=[])
+    p.add_argument("--category")
     p.add_argument("--dod")
     p.add_argument("--dry-run", action="store_true")
 
