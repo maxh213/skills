@@ -14,6 +14,11 @@
       "name": "scout",
       "source": "./plugins/scout",
       "description": "Quota-routed codebase exploration: delegates read-only repo scouting to the cheapest live backend (kilo, kimi, or claude CLI)."
+    },
+    {
+      "name": "task-writing",
+      "source": "./plugins/task-writing",
+      "description": "Turn a rough description into a task, ticket, bug report, spike or chore that a stranger can pick up — optionally grilling the idea first."
     }
   ]
 }

@@ -1,0 +1,20 @@
+{
+  "name": "task-writing",
+  "version": "1.0.0",
+  "description": "Turn a rough description into a task, ticket, bug report, spike or chore that a stranger can pick up — optionally grilling the idea first.",
+  "author": {
+    "name": "Max Harris",
+    "email": "max.o.harris@outlook.com",
+    "url": "https://github.com/maxh213"
+  },
+  "homepage": "https://github.com/maxh213/skills",
+  "repository": "https://github.com/maxh213/skills",
+  "keywords": [
+    "task",
+    "ticket",
+    "issue",
+    "bug-report",
+    "acceptance-criteria",
+    "writing"
+  ]
+}

@@ -4,7 +4,7 @@ Public agent skills for Grok, Claude, agy, kimi, opencode, etc.
 
 All work skills ship as one plugin, **prompt-manager**, so teammates install a single package.
 
-Personal tooling ships as separate plugins: **scout** (quota-routed codebase exploration across kilo/kimi/claude CLIs).
+Personal tooling ships as separate plugins: **scout** (quota-routed codebase exploration across kilo/kimi/claude CLIs) and **task-writing** (turn a rough description into a task a stranger can pick up).
 
 ## Install (Grok)
 
@@ -12,6 +12,7 @@ Personal tooling ships as separate plugins: **scout** (quota-routed codebase exp
 grok plugin marketplace add maxh213/skills
 grok plugin install prompt-manager --trust
 grok plugin install scout --trust        # optional, personal tooling
+grok plugin install task-writing --trust # optional, personal tooling
 ```
 
 Then `/setup-prompt-manager` once, then `/prompt-manager-full-run`.
@@ -22,11 +23,12 @@ Then `/setup-prompt-manager` once, then `/prompt-manager-full-run`.
 claude plugin marketplace add maxh213/skills
 claude plugin install prompt-manager@maxh213-skills
 claude plugin install scout@maxh213-skills        # optional, personal tooling
+claude plugin install task-writing@maxh213-skills # optional, personal tooling
 ```
 
 Restart Claude Code afterwards — plugin skills are enumerated at startup.
 
-Alternatively, copy each folder under `plugins/prompt-manager/skills/` (work skills) or `plugins/scout/skills/` (scout) into `~/.claude/skills/`.
+Alternatively, copy each folder under any plugin's `skills/` directory into `~/.claude/skills/`.
 
 ## Layout
 
@@ -49,6 +51,15 @@ plugins/scout/
     scout/
       SKILL.md           # routing rationale, brief discipline, backend recipes
       route.py           # live quota probes + DECISION=<backend> picker
+
+plugins/task-writing/
+  plugin.json
+  skills/
+    write-task/
+      SKILL.md           # description in, TASK-<slug>.md out
+      CHEAT-SHEET.md     # section anatomy, per-type shapes, 60-second check
+    grill-task/
+      SKILL.md           # grilling -> write-task
 ```
 
 Secrets are read from `~/.config/workstation/config.toml` at runtime (mode 0600). Nothing is embedded.
@@ -56,3 +67,5 @@ Secrets are read from `~/.config/workstation/config.toml` at runtime (mode 0600)
 `prompt-manager-full-run` accepts `--skip-thoughts` to skip the extra feedback step between task-context and idea-to-prompt.
 
 `scout` needs at least one of the kilo, kimi, or claude CLIs installed and logged in; see `plugins/scout/README.md` for how routing works.
+
+`task-writing` writes nothing the description didn't say: gaps become open questions or stated assumptions. `/grill-task` uses the `grilling` skill from mattpocock-skills when it's installed, and runs the interview itself when it isn't.

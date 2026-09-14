@@ -27,6 +27,17 @@
       },
       "homepage": "https://github.com/maxh213/skills",
       "keywords": ["scout", "exploration", "codebase", "quota"]
+    },
+    {
+      "name": "task-writing",
+      "description": "Turn a rough description into a task, ticket, bug report, spike or chore that a stranger can pick up — optionally grilling the idea first.",
+      "category": "productivity",
+      "source": {
+        "type": "local",
+        "path": "./plugins/task-writing"
+      },
+      "homepage": "https://github.com/maxh213/skills",
+      "keywords": ["task", "ticket", "issue", "bug-report", "writing"]
     }
   ]
 }
