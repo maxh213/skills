@@ -9,6 +9,11 @@
       "name": "prompt-manager",
       "source": "./plugins/prompt-manager",
       "description": "Sprint tasks, task context, idea-to-prompt, and prompt-manager implementation — plus credential setup and a full-run orchestrator."
+    },
+    {
+      "name": "scout",
+      "source": "./plugins/scout",
+      "description": "Quota-routed codebase exploration: delegates read-only repo scouting to the cheapest live backend (kilo, kimi, or claude CLI)."
     }
   ]
 }

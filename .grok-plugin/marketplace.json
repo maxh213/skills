@@ -1,6 +1,6 @@
 {
   "name": "maxh213-skills",
-  "description": "Agent skills shipped as the prompt-manager plugin",
+  "description": "Agent skills: the prompt-manager plugin plus scout",
   "owner": {
     "name": "Max Harris",
     "email": "max.o.harris@outlook.com"
@@ -16,6 +16,17 @@
       },
       "homepage": "https://github.com/maxh213/skills",
       "keywords": ["prompt-manager", "clickup", "sprint", "idea-to-prompt"]
+    },
+    {
+      "name": "scout",
+      "description": "Quota-routed codebase exploration: delegates read-only repo scouting to the cheapest live backend (kilo, kimi, or claude CLI).",
+      "category": "productivity",
+      "source": {
+        "type": "local",
+        "path": "./plugins/scout"
+      },
+      "homepage": "https://github.com/maxh213/skills",
+      "keywords": ["scout", "exploration", "codebase", "quota"]
     }
   ]
 }
