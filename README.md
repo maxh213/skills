@@ -4,7 +4,7 @@ Public agent skills for Grok, Claude, agy, kimi, opencode, etc.
 
 All work skills ship as one plugin, **prompt-manager**, so teammates install a single package.
 
-Personal tooling ships as separate plugins: **scout** (quota-routed codebase exploration across kilo/kimi/claude CLIs) and **task-writing** (turn a rough description into a task a stranger can pick up).
+Personal tooling ships as separate plugins: **scout** (quota-routed codebase exploration across kilo/kimi/claude CLIs), **work-scout** (the same idea for Slack and ClickUp questions) and **task-writing** (turn a rough description into a task a stranger can pick up).
 
 ## Install (Grok)
 
@@ -12,6 +12,7 @@ Personal tooling ships as separate plugins: **scout** (quota-routed codebase exp
 grok plugin marketplace add maxh213/skills
 grok plugin install prompt-manager --trust
 grok plugin install scout --trust        # optional, personal tooling
+grok plugin install work-scout --trust   # optional, needs scout for its router
 grok plugin install task-writing --trust # optional, personal tooling
 ```
 
@@ -23,6 +24,7 @@ Then `/setup-prompt-manager` once, then `/prompt-manager-full-run`.
 claude plugin marketplace add maxh213/skills
 claude plugin install prompt-manager@maxh213-skills
 claude plugin install scout@maxh213-skills        # optional, personal tooling
+claude plugin install work-scout@maxh213-skills   # optional, needs scout for its router
 claude plugin install task-writing@maxh213-skills # optional, personal tooling
 ```
 
@@ -54,6 +56,16 @@ plugins/scout/
       SKILL.md           # routing rationale, brief discipline, backend recipes
       route.py           # live quota probes + DECISION=<backend> picker
 
+plugins/work-scout/
+  plugin.json
+  skills/
+    work-scout/
+      SKILL.md           # when to scout vs look, the two-pass loop, reading the report
+      scripts/
+        wscout.py        # read-only Slack + ClickUp helper the scout calls
+        run.py           # route -> pass 1 -> critique pass 2 -> report.md
+        brief-template.md
+
 plugins/task-writing/
   plugin.json
   skills/
@@ -69,6 +81,8 @@ Secrets are read from `~/.config/workstation/config.toml` at runtime (mode 0600)
 `prompt-manager-full-run` accepts `--skip-thoughts` to skip the extra feedback step between task-context and idea-to-prompt.
 
 `scout` needs at least one of the kilo, kimi, or claude CLIs installed and logged in; see `plugins/scout/README.md` for how routing works.
+
+`work-scout` answers "what did X show me / what did I miss / what's the history of GLOBAL-123" from Slack and ClickUp without the raw messages ever entering the main session: a cheap model, routed by scout's `route.py`, searches through a read-only helper, is asked twice, and hands back a cited report file. Needs `[slack]` and `[clickup]` tokens in `~/.config/workstation/config.toml`; see `plugins/work-scout/README.md`.
 
 `task-writing` writes nothing the description didn't say: a gap that changes the work is asked about first, and the rest is left out. Tickets never carry open questions. `/grill-task` uses the `grilling` skill from mattpocock-skills when it's installed, and runs the interview itself when it isn't.
 

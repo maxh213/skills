@@ -1,0 +1,22 @@
+{
+  "name": "work-scout",
+  "version": "1.0.0",
+  "description": "Quota-routed Slack and ClickUp research: a cheap model (Mercury 2.5 via kilo, Kimi K2.7 via kimi CLI, or Haiku 4.5 via claude CLI) does the searching twice through a read-only helper and returns a cited report file, keeping the main session's context clean.",
+  "author": {
+    "name": "Max Harris",
+    "email": "max.o.harris@outlook.com",
+    "url": "https://github.com/maxh213"
+  },
+  "homepage": "https://github.com/maxh213/skills",
+  "repository": "https://github.com/maxh213/skills",
+  "keywords": [
+    "scout",
+    "slack",
+    "clickup",
+    "research",
+    "quota",
+    "kilo",
+    "kimi",
+    "claude"
+  ]
+}

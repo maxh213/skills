@@ -16,6 +16,11 @@
       "description": "Quota-routed codebase exploration: delegates read-only repo scouting to the cheapest live backend (kilo, kimi, or claude CLI)."
     },
     {
+      "name": "work-scout",
+      "source": "./plugins/work-scout",
+      "description": "Quota-routed Slack and ClickUp research: a cheap model searches twice through a read-only helper and returns a cited report, keeping the main session's context clean."
+    },
+    {
       "name": "task-writing",
       "source": "./plugins/task-writing",
       "description": "Turn a rough description into a task, ticket, bug report, spike or chore that a stranger can pick up \u2014 optionally grilling the idea first."
