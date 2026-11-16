@@ -32,7 +32,7 @@ import urllib.request
 from datetime import date
 from pathlib import Path
 
-DEFAULT_SPRINT_FOLDER = "90127244534"
+DEFAULT_SPRINT_FOLDER = "901214999237"  # Global organization (AI) → 📁 Sprints, the EU Parasol sprints
 DEFAULT_TRIAGE_LIST = "901218619665"  # Global organization (AI) → PM Triage IT → PM TRIAGE
 DEFAULT_CONFIG = Path.home() / ".config" / "workstation" / "config.toml"
 API = "https://api.clickup.com/api/v2"
