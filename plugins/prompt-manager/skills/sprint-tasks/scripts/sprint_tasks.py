@@ -10,11 +10,19 @@ import os
 import re
 import sys
 import tomllib
+import urllib.error
 import urllib.request
 from datetime import date
 from pathlib import Path
 
-DEFAULT_SPRINT_FOLDER = "90127244534"
+# Several of these can have a sprint covering today. Tie-break order when the
+# user's own tasks (then unassigned tasks) don't decide. The configured
+# clickup.sprint_folder is appended when it isn't already listed.
+SPRINT_FOLDERS = (
+    "901211261515",  # EU Project Team
+    "901214999237",  # Sprints
+)
+DEFAULT_SPRINT_FOLDER = "90127244534"  # IT sprint Folder; checked last via clickup.sprint_folder
 DEFAULT_CONFIG = Path.home() / ".config" / "workstation" / "config.toml"
 
 
@@ -57,7 +65,7 @@ def user_id_from_api(tok: str) -> str:
     return str(uid)
 
 
-def token_and_ids() -> tuple[str, str, str]:
+def token_and_ids() -> tuple[str, str, list[str]]:
     scripts = _plugin_scripts()
     tok = me = folder = None
     if scripts:
@@ -86,7 +94,11 @@ def token_and_ids() -> tuple[str, str, str]:
         sys.exit("No ClickUp token — run setup-prompt-manager")
     if not me:
         me = user_id_from_api(str(tok))
-    return str(tok), str(me), str(folder or DEFAULT_SPRINT_FOLDER)
+    folders = list(SPRINT_FOLDERS)
+    extra = str(folder or DEFAULT_SPRINT_FOLDER)
+    if extra not in folders:
+        folders.append(extra)
+    return str(tok), str(me), folders
 
 
 def api(tok: str, path: str):
@@ -98,10 +110,9 @@ def api(tok: str, path: str):
         return json.load(r)
 
 
-def current_sprint(tok: str, folder: str):
+def covering_sprint(lists: list, today: date) -> dict | None:
     """Sprint lists are named like 'Sprint {2} (7/6 - 7/19)' — M/D, no year."""
-    today = date.today()
-    for lst in api(tok, f"/folder/{folder}/list")["lists"]:
+    for lst in lists:
         m = re.search(r"\((\d{1,2})/(\d{1,2})\s*-\s*(\d{1,2})/(\d{1,2})\)", lst["name"])
         if not m:
             continue
@@ -110,14 +121,71 @@ def current_sprint(tok: str, folder: str):
         end = date(today.year + (1 if m2 < m1 else 0), m2, d2)
         if start <= today <= end:
             return lst
-    sys.exit("No sprint list covers today — check folder " + folder)
+    return None
+
+
+def open_tasks(tok: str, list_id: str) -> list:
+    """All open tasks on a list. ClickUp pages at 100."""
+    tasks: list = []
+    page = 0
+    while True:
+        batch = api(
+            tok,
+            f"/list/{list_id}/task?subtasks=true&include_closed=false&page={page}",
+        )["tasks"]
+        tasks.extend(batch)
+        if len(batch) < 100:
+            return tasks
+        page += 1
+
+
+def pick_sprint(candidates: list[dict]) -> dict:
+    """Prefer the covering sprint the user actually has work in.
+
+    Most open tasks assigned to them, then most unassigned, then earlier folder.
+    """
+    return max(candidates, key=lambda c: (c["mine"], c["unassigned"], -c["order"]))
+
+
+def current_sprint(tok: str, folders: list[str], me: str) -> tuple[dict, list]:
+    """Covering sprint for this user, plus its open tasks. Skip a folder that 404s."""
+    today = date.today()
+    candidates = []
+    for order, folder in enumerate(folders):
+        try:
+            lists = api(tok, f"/folder/{folder}/list")["lists"]
+        except urllib.error.HTTPError as e:
+            if e.code in (401, 403):
+                sys.exit(f"ClickUp auth failed (HTTP {e.code}) — run setup-prompt-manager")
+            continue
+        found = covering_sprint(lists, today)
+        if not found:
+            continue
+        tasks = open_tasks(tok, found["id"])
+        mine = sum(1 for t in tasks if any(str(a["id"]) == me for a in t["assignees"]))
+        unassigned = sum(1 for t in tasks if not t["assignees"])
+        candidates.append({
+            "id": found["id"],
+            "name": found["name"],
+            "folder_id": folder,
+            "order": order,
+            "mine": mine,
+            "unassigned": unassigned,
+            "tasks": tasks,
+        })
+    if not candidates:
+        sys.exit("No sprint list covers today — checked folders " + ", ".join(folders))
+    chosen = pick_sprint(candidates)
+    return (
+        {"id": chosen["id"], "name": chosen["name"], "folder_id": chosen["folder_id"]},
+        chosen["tasks"],
+    )
 
 
 def main():
     show_all = "--all" in sys.argv
-    tok, me, folder = token_and_ids()
-    sprint = current_sprint(tok, folder)
-    tasks = api(tok, f"/list/{sprint['id']}/task?subtasks=true&include_closed=false")["tasks"]
+    tok, me, folders = token_and_ids()
+    sprint, tasks = current_sprint(tok, folders, me)
 
     rows = []
     for t in tasks:
@@ -135,7 +203,7 @@ def main():
             "url": t["url"],
         })
 
-    print(f"Sprint: {sprint['name']}  (list {sprint['id']})\n")
+    print(f"Sprint: {sprint['name']}  (list {sprint['id']}, folder {sprint['folder_id']})\n")
     print(json.dumps(rows, indent=2))
 
 

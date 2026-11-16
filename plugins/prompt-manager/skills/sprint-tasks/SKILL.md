@@ -35,7 +35,7 @@ Table columns: ID (linked to URL), task name, points, priority, assignee ("me" o
 ## How it works (if the script breaks)
 
 - Token and user id: `~/.config/workstation/config.toml` (`clickup.token`, `clickup.user_id`), else env listed in `references/credentials.toml`.
-- Sprint folder from `clickup.sprint_folder` (default `90127244534`); lists named `Sprint {N} (M/D - M/D)` — pick the one whose range contains today (no year in the name; handle Dec→Jan wrap).
+- Candidate folders, in tie-break order: EU Project Team (`901211261515`), Sprints (`901214999237`), then `clickup.sprint_folder` when that id is not already listed (catalog default `901214999237`, the Sprints folder, so usually already listed). A list named `Sprint {N} (M/D - M/D)` counts when its range contains today (no year; handle a Dec→Jan wrap). More than one folder can match. Use the one with the most open tasks assigned to the configured user; if that ties, the one with more unassigned tasks; if that still ties, the earlier folder.
 - `GET /api/v2/list/{id}/task?subtasks=true&include_closed=false`, keep tasks where assignees is empty or contains the configured user id.
 
 ## Boundaries
